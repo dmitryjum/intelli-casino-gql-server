@@ -1,11 +1,11 @@
-import { PubSub, withFilter } from 'graphql-subscriptions'
+import { withFilter } from 'graphql-subscriptions'
 import { IResolvers } from '@graphql-tools/utils';
 import GraphQLJSON from 'graphql-type-json';
 import { GraphQLDateTime } from 'graphql-scalars';
 import { queryResolvers } from './queryResolvers';
 import { mutationResolvers } from './mutationResolvers';
+import { pubsub } from '@/src/lib/redisPubSub';
 
-export const pubsub = new PubSub();
 const GAME_UPDATED = 'GAME_UPDATED';
 
 const resolvers: IResolvers = {

@@ -8,6 +8,7 @@ This is a standalone **Express + Apollo Server** application that provides a Gra
 
 - **GraphQL** endpoint at `/api/graphql`
 - **Subscriptions** via WebSockets (using `graphql-ws`)
+- **Redis PubSub** for handling real-time subscriptions
 - **Prisma** ORM for PostgreSQL (or any other supported DB)
 - **NextAuth**-compatible session validation
 - Custom resolvers, mutations, and subscriptions for real-time quiz/gaming logic
@@ -21,6 +22,7 @@ This is a standalone **Express + Apollo Server** application that provides a Gra
 - [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
 - [GraphQL](https://graphql.org/)
 - [graphql-ws](https://github.com/enisdenjo/graphql-ws) for subscriptions
+- [Redis](https://redis.io/) for PubSub
 - [Prisma](https://www.prisma.io/) for database access
 - [NextAuth](https://next-auth.js.org/) for session handling
 - [WebSockets](https://developer.mozilla.org/docs/Web/API/WebSockets_API)
@@ -37,6 +39,8 @@ my-graphql-server/
  ┃ ┣ resolvers/
  ┃ ┃ ┗ index.ts           # Your GraphQL resolvers (Queries, Mutations, Subscriptions)
  ┃ ┣ schema.ts            # GraphQL type definitions (SDL)
+ ┃ ┣ lib/
+ ┃ ┃ ┗ redisPubSub.ts     # Redis PubSub configuration
  ┃ ┣ nextAuthOptions.ts   # (Optional) NextAuth config if you want to replicate it here
  ┃ ┗ index.ts             # Entry point (Express + ApolloServer setup)
  ┣ .env.example           # Example environment variables
@@ -52,7 +56,7 @@ my-graphql-server/
 1. **Clone** the repository:
 
    ```bash
-   git clone https://github.com/your-username/my-graphql-server.git
+   git clone https://github.com/dmitryjum/intelli-casino-gql-server.git
    cd intelli-casino-gql-server
    ```
 
@@ -101,6 +105,7 @@ my-graphql-server/
 
 ---
 
+
 ## Environment Variables
 
 | Variable          | Description                                            | Example                                  |
@@ -109,10 +114,16 @@ my-graphql-server/
 | `NEXTAUTH_SECRET` | Secret key for NextAuth session encryption/validation  | `my-secret-key`                          |
 | `CLIENT_ORIGIN`   | The origin (URL) of your front-end (CORS allowed)      | `http://localhost:3000`                  |
 | `PORT`            | Port on which the server will listen                   | `4000`                                   |
+| `REDIS_HOST`      | Host for your Redis server                             | `127.0.0.1`                              |
+| `REDIS_PORT`      | Port for your Redis server                             | `6379`                                   |
+| `REDIS_PASSWORD`  | Password for your Redis server (if any)                | `your-redis-password`                    |
 
 ---
 
 ## Usage Notes
+
+- **Redis PubSub**  
+  The server uses Redis for handling real-time subscriptions. Ensure your Redis server is running and accessible with the correct environment variables set for `REDIS_HOST`, `REDIS_PORT`, and `REDIS_PASSWORD`.
 
 - **Authentication**  
   The server uses [`getServerSession`](https://next-auth.js.org/configuration/nextjs) from **NextAuth** to validate the user’s session cookie. Make sure you have:
@@ -120,7 +131,7 @@ my-graphql-server/
   - The same or compatible session storage (e.g., the same `DATABASE_URL` if you store sessions in the DB).
 
 - **Subscriptions**  
-  Subscriptions are handled via `graphql-ws`.  
+  Subscriptions are handled via `graphql-ws` and Redis PubSub.  
   - For WebSocket connections, the path is `ws://<HOST>:<PORT>/api/graphql`.  
   - Make sure your front-end Apollo Client is configured with a `WebSocketLink` to that URL.
 
