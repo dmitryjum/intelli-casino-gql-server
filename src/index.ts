@@ -4,10 +4,10 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { WebSocketServer } from 'ws';
-import { useServer } from 'graphql-ws/dist/use/ws';
+import { useServer } from 'graphql-ws/use/ws';
 import cors from 'cors';
 import typeDefs from '@/src/graphql/schema';
-import resolvers from '@/src/graphql/resolvers/';
+import resolvers from '@/src/graphql/resolvers';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { authOptions } from '@/src/lib/nextauth';
 import { getServerSession } from 'next-auth'
