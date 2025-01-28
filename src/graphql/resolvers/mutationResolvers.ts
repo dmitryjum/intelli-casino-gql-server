@@ -3,7 +3,7 @@ import { OPEN_DURATION } from '@/src/lib/constants';
 import { generateBlankedAnswer } from '@/src/lib/utils';
 import { GraphQLError } from 'graphql';
 import { getGameUpdateData } from '@/src/lib/utils';
-import { pubsub } from '../resolvers/index'; // shared resolvers have to use the same PubSub instance for sockets to work
+import { pubsub } from '@/src/lib/redisPubSub';
 
 const prisma = new PrismaClient();
 const GAME_UPDATED = 'GAME_UPDATED';
