@@ -76,5 +76,6 @@ import { GraphQLError } from 'graphql';
   httpServer.listen(PORT, () => {
     console.log(`Server is now running on http://localhost:${PORT}/api/graphql`);
     console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}/api/graphql`);
+    console.log(`🚀 Redis PubSub is running on ${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`);
   });
 })();
