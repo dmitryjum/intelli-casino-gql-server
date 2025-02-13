@@ -140,6 +140,25 @@ my-graphql-server/
 
 ---
 
+## Running with Docker
+
+1. **Create** a Docker-specific environment file named `.env.docker` in the project root. This file should contain your production-style environment variables that use `host.docker.internal` for local services. For example:
+
+   ```bash
+   # .env.docker
+   DATABASE_URL=postgresql://dmitryjum:dmitryjum@host.docker.internal:5432/intelli_casino?schema=public
+   REDIS_HOST=host.docker.internal
+
+2. Build the Docker image:
+   ```bash
+   docker build -t intelli-casino-express .
+
+3. **Run** the Docker container and inject the Docker environment file:
+   ```bash
+   docker run -b 4000:4000 --env-file .env.docker intelli-casino-express
+
+This setup ensures that your application running insde Docker connects to your local PostgreSQL and Redis instances via `host.docker.internal`
+
 <!-- ## Deployment
 
 You can deploy this app on any Node-friendly host that supports WebSockets, such as:

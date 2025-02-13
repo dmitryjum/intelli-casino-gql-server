@@ -1,26 +1,27 @@
-# Use an official Node.js runtime as a parent image
-FROM node:23-alpine3.20
-
-# Set working directory inside the container
+# Builder Stage
+FROM node:23-alpine3.20 AS builder
 WORKDIR /app
 
-# Copy package.json and package-lock.json first for dependency caching
+# Copy package files and install dependencies
 COPY package.json package-lock.json ./
+RUN npm install
 
-# Install dependencies
-RUN npm install --omit=dev
-
-# Copy the rest of the application files
+# Copy all sources and build
 COPY . .
-
-# Build the TypeScript code
 RUN npm run build
-
-# Generate Prisma client for Linux
 RUN npx prisma generate
 
-# Expose the port your Express server runs on (e.g., 4000)
+# Final Stage
+FROM node:23-alpine3.20
+WORKDIR /app
+
+# Copy only necessary artifacts from the builder stage
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+
+# Expose the port that the app listens on
 EXPOSE 4000
 
-# Start the server using the compiled JavaScript files
+# Start the server using the compiled code
 CMD ["node", "-r", "module-alias/register", "dist/src/index.js"]
