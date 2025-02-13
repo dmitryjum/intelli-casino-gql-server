@@ -6,12 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start:build": "node dist/src/index.js",
+    "start:build": "node -r module-alias/register dist/src/index.js",
     "dev": "nodemon --watch './**/*.ts' --exec 'ts-node -r tsconfig-paths/register src/index.ts'",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:studio": "npx prisma studio"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +26,7 @@
     "@prisma/client": "^6.2.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "graphql": "^16.10.0",
     "graphql-redis-subscriptions": "^2.7.0",
@@ -33,6 +37,7 @@
     "graphql-ws": "^6.0.0",
     "ioredis": "^5.4.2",
     "keyword-extractor": "^0.0.28",
+    "module-alias": "^2.2.3",
     "next-auth": "^4.24.11",
     "ws": "^8.18.0"
   },
