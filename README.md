@@ -146,7 +146,7 @@ my-graphql-server/
 
    ```bash
    # .env.docker
-   DATABASE_URL=postgresql://dmitryjum:dmitryjum@host.docker.internal:5432/intelli_casino?schema=public
+   DATABASE_URL=postgresql://user:password@host.docker.internal:5432/intelli_casino?schema=public
    REDIS_HOST=host.docker.internal
 
 2. Build the Docker image:
