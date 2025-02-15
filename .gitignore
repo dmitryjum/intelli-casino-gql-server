@@ -12,3 +12,4 @@
 .env
 .env*.local
 .env*.production
+.env*.docker

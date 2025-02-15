@@ -1,0 +1,20 @@
+# Ignore node_modules (since we install them fresh in Docker)
+node_modules
+
+# Ignore built files (since Docker builds them)
+dist
+
+# Ignore environment files (to prevent secrets leakage)
+.env
+.env.local
+.env.production
+.env.docker
+
+
+# Ignore logs and cache files
+npm-debug.log
+logs
+*.log
+
+# Ignore Docker artifacts
+Dockerfile

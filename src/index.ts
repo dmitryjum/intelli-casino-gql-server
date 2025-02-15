@@ -13,6 +13,8 @@ import { authOptions } from '@/src/lib/nextauth';
 import { getServerSession } from 'next-auth'
 import cookieParser from 'cookie-parser';
 import { GraphQLError } from 'graphql';
+import dotenv from 'dotenv';
+dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local' });
 
 (async () => {
   const schema = makeExecutableSchema({
