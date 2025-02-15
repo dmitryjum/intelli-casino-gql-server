@@ -13,3 +13,5 @@
 .env*.local
 .env*.production
 .env*.docker
+# log files
+intelli-casino-task-revision3-AWS-CLI-input.json

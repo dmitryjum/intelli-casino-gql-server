@@ -15,6 +15,7 @@ dist
 npm-debug.log
 logs
 *.log
+intelli-casino-task-revision3-AWS-CLI-input.json
 
 # Ignore Docker artifacts
 Dockerfile
