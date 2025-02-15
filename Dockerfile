@@ -8,8 +8,8 @@ RUN npm install
 
 # Copy all sources and build
 COPY . .
-RUN npm run build
 RUN npx prisma generate
+RUN npm run build
 
 # Final Stage
 FROM node:23-alpine3.20
