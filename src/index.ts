@@ -75,7 +75,7 @@ dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' 
 
   const PORT = 4000;
 
-  httpServer.listen(PORT, () => {
+  httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is now running on http://localhost:${PORT}/api/graphql`);
     console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}/api/graphql`);
     console.log(`🚀 Redis PubSub is running on ${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`);
