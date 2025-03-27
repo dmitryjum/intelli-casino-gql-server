@@ -49,6 +49,10 @@ dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' 
   });
 
   await server.start();
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+  });
+
   app.use(
     '/api/graphql',
     cors<cors.CorsRequest>({
