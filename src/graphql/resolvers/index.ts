@@ -4,7 +4,6 @@ import GraphQLJSON from 'graphql-type-json';
 import { GraphQLDateTime } from 'graphql-scalars';
 import { queryResolvers } from './queryResolvers';
 import { mutationResolvers } from './mutationResolvers';
-import { pubsub } from '@/src/lib/redisPubSub';
 
 const GAME_UPDATED = 'GAME_UPDATED';
 
@@ -17,7 +16,7 @@ const resolvers: IResolvers = {
   Subscription: {
     gameUpdated: {
       subscribe: withFilter(
-        () => pubsub.asyncIterableIterator(GAME_UPDATED),
+        (_: any, __: any, context: any) => context.pubsub.asyncIterator(GAME_UPDATED),
         (payload, variables) => {
           if (variables.gameId) {
             return payload.gameUpdated.id === variables.gameId;

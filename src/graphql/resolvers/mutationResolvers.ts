@@ -3,7 +3,6 @@ import { OPEN_DURATION } from '@/src/lib/constants';
 import { generateBlankedAnswer } from '@/src/lib/utils';
 import { GraphQLError } from 'graphql';
 import { getGameUpdateData } from '@/src/lib/utils';
-import { pubsub } from '@/src/lib/redisPubSub';
 
 const prisma = new PrismaClient();
 const GAME_UPDATED = 'GAME_UPDATED';
@@ -11,7 +10,7 @@ const GAME_UPDATED = 'GAME_UPDATED';
 export const mutationResolvers = {
   openGame: async (_: any, { gameId, currentQuestionIndex }:
     { gameId: string, currentQuestionIndex?: number }, context: any) => {
-    const { session } = context;
+    const { session, pubsub } = context;
     const updatedGame = await prisma.$transaction(async (prisma) => {
       const game = await prisma.game.findUnique({
         where: { id: gameId },
@@ -44,7 +43,7 @@ export const mutationResolvers = {
   },
   closeGame: async (_: any, { gameId, currentQuestionIndex }:
     { gameId: string, currentQuestionIndex?: number }, context: any) => {
-    const { session } = context;
+    const { session, pubsub } = context;
     const updatedGame = await prisma.$transaction(async (prisma) => {
       const game = await prisma.game.findUnique({
         where: { id: gameId },
@@ -101,7 +100,7 @@ export const mutationResolvers = {
     return updatedGame;
   },
   finishGame: async (_: any, { gameId, timeEnded }: { gameId: string, timeEnded: string }, context: any) => {
-    const { session } = context;
+    const { session, pubsub } = context;
     const updatedGame = await prisma.$transaction(async (prisma) => {
       const game = await prisma.game.findUnique({
         where: { id: gameId },
@@ -148,7 +147,7 @@ export const mutationResolvers = {
     return updatedGame;
   },
   updateGameQuestion: async (_: any, { gameId, currentQuestionStartTime, currentQuestionIndex }: { gameId: string, currentQuestionStartTime: string, currentQuestionIndex: number }, context: any) => {
-    const { session } = context;
+    const { session, pubsub } = context;
     const updatedGame = await prisma.$transaction(async (prisma) => {
       const game = await prisma.game.findUnique({
         where: { id: gameId },
@@ -203,7 +202,7 @@ export const mutationResolvers = {
     return updatedGame;
   },
   addSpectatorToGame: async (_: any, { gameId, userId }: { gameId: string, userId: string }, context: any) => {
-    const { session } = context;
+    const { session, pubsub } = context;
     const updatedGame = await prisma.$transaction(async (prisma) => {
       const game = await prisma.game.findUnique({
         where: { id: gameId },

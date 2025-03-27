@@ -11,7 +11,12 @@ const options: RedisOptions = {
   retryStrategy: (times: number) => Math.min(times * 50, 2000) // Retry strategy
 };
 
+const redisPublisher = new Redis(options);
+const redisSubscriber = new Redis(options);
+redisPublisher.on('connect', () => console.log('Redis Publisher connected'));
+redisSubscriber.on('connect', () => console.log('Redis Subscriber connected'));
+
 export const pubsub = new RedisPubSub({
-  publisher: new Redis(options),
-  subscriber: new Redis(options),
+  publisher: redisPublisher,
+  subscriber: redisSubscriber,
 });

@@ -14,6 +14,7 @@ import { getServerSession } from 'next-auth'
 import cookieParser from 'cookie-parser';
 import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
+import { pubsub } from '@/src/lib/redisPubSub';
 dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.local' });
 
 (async () => {
@@ -30,7 +31,15 @@ dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' 
     path: '/api/graphql',
   });
 
-  const serverCleanup = useServer({ schema }, wsServer);
+  const serverCleanup = useServer(
+    {
+      schema,
+      context: async (ctx, matchesGlob, args) => {
+        return { pubsub };
+      }
+    },
+     wsServer
+  );
 
   const server = new ApolloServer({
     schema,
@@ -72,7 +81,7 @@ dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env.production' 
             },
           });
         }
-        return { req, res, session };
+        return { req, res, session, pubsub };
       }
     }),
   );
